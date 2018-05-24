@@ -1,0 +1,4 @@
+#! /bin/sh
+ant release && \
+jarsigner -verbose -signedjar bin/10-or-equal-release-unaligned.apk -sigalg SHA1withRSA -digestalg SHA1 -keystore /e/scala/projects/bormotuhin.keystore bin/10-or-equal-release-unsigned.apk bormotuhin && \
+/e/scala/.android/sbt/sdk/build-tools/23.0.3/zipalign.exe -v -f -p 4 bin/10-or-equal-release-unaligned.apk bin/10-or-equal.apk

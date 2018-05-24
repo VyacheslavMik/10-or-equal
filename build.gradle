@@ -1,0 +1,101 @@
+buildscript {
+
+  System.properties['com.android.build.gradle.overrideVersionCheck'] = 'true'
+
+  /*
+   * Change these to fit your environment.  They can be provided to gradlew's
+   * command line via the -P parameter, e.g. -PkawaJarPath="/abc/kawa.jar".
+   */
+  project.ext {
+    if (!project.hasProperty('androidBuildToolsVersion')) {
+      project.ext.androidBuildToolsVersion = '23.0.3'
+    }
+    if (!project.hasProperty('androidCompileSdkVersion')) {
+      project.ext.androidCompileSdkVersion = 23
+    }
+    if (!project.hasProperty('kawaJarPath')) {
+      project.ext.kawaJarPath = 'libs/kawa.jar'
+    }
+    if (!project.hasProperty('androidGradlePluginVersion')) {
+      project.ext.androidGradlePluginVersion = '2.2.3'
+    }
+  }
+
+  repositories {
+    mavenLocal()
+    jcenter()
+  }
+  dependencies {
+    /* Add Android build system. */
+    classpath "com.android.tools.build:gradle:${androidGradlePluginVersion}"
+  }
+}
+
+plugins {
+  /*
+   * This plugin is used to override project properties via the command line.
+   * This allows us to change various properties when testing, most
+   * importantly plugin versions and the build directory location
+   * (project.buildDir).
+   */
+  id 'nebula.override' version '3.0.2'
+  /*
+   * Need to use the new plugins script block to get automatic injection of
+   * code under test.  See:
+   * https://docs.gradle.org/current/userguide/test_kit.html#sub:test-kit-classpath-injection
+   */
+  id "com.medranocalvo.gradle.gradle-android-kawa-plugin" version "0.9"
+}
+
+/* Apply the Kawa Android plugin. */
+apply plugin: 'com.android.application'
+apply plugin: "com.medranocalvo.gradle.gradle-android-kawa-plugin"
+
+dependencies {
+  /* Add path to kawa.jar. */
+  compile files(kawaJarPath)
+  compile 'com.google.android.gms:play-services:10.0.1'
+  compile 'com.google.firebase:firebase-ads:10.0.1'
+}
+
+/* General Kawa configuration. */
+kawa {
+  language 'scheme'
+}
+
+android {
+  buildToolsVersion androidBuildToolsVersion
+  compileSdkVersion androidCompileSdkVersion
+
+  sourceSets {
+    main {
+      kawa {
+  	srcDir "src/main/scm/ru/mik/tenorequal"
+      }
+    }
+  }
+
+  /*
+   * Kawa configuration for android.  Enable inlining (it is enabled by
+   * default anyway).
+   */
+  kawa {
+    inline true
+  }
+
+  lintOptions {
+    disable 'InvalidPackage'
+  }
+
+  buildTypes {
+    debug {
+      /*
+       * BuildType-specific Kawa configuration.  Disable inlining for
+       * debug builds, overriding the android configuration.
+       */
+      kawa {
+	inline false
+      }
+    }
+  }
+}

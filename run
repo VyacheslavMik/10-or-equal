@@ -1,0 +1,2 @@
+#! /bin/sh
+adb shell am start -n ru.mik.tenorequal/ru.mik.tenorequal.main
