@@ -2,3 +2,7 @@
 bin/
 gen/
 log
+rn/node_modules
+rn/android
+rn/ios
+build.gradle
