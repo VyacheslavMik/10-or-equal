@@ -1,97 +1,169 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 10 or Equal - React Native
 
-# Getting Started
+React Native version of **10 or Equal - Attention Game**.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+The game shows a grid of numbers. Select two active cells to remove them when:
 
-## Step 1: Start Metro
+- the numbers are equal, or
+- the numbers add up to 10.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+Cells can be matched when they are visible neighbors horizontally or vertically, skipping removed cells in that line. The **Продолжить** button appends the remaining active numbers to the end of the board so the game can continue.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Requirements
+
+- Node.js 18 or newer
+- npm
+- Android Studio with Android SDK installed
+- Android emulator or a physical Android device with USB debugging enabled
+- JDK 17 for Android builds
+
+This project uses React Native `0.78.2`.
+
+## Install Dependencies
+
+From this directory:
 
 ```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+cd /home/vyacheslav/dev/10-or-equal/rn
+npm install
 ```
 
-## Step 2: Build and run your app
+## Run On Android
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
+Start an emulator from Android Studio, or connect a physical Android device. Check that Android Debug Bridge can see it:
 
 ```sh
-# Using npm
+adb devices
+```
+
+Then run the app:
+
+```sh
+cd /home/vyacheslav/dev/10-or-equal/rn
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
+`npm run android` builds the debug APK, installs it on the connected emulator/device, starts Metro if needed, and launches the app.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+If Metro is already running, that is fine. The command may print:
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+```text
+info A dev server is already running for this project on port 8081.
+```
+
+## Useful Commands
+
+Start Metro manually:
 
 ```sh
-bundle install
+npm start
 ```
 
-Then, and every time you update your native dependencies, run:
+Build the Android debug APK without installing it:
 
 ```sh
-bundle exec pod install
+cd android
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk ./gradlew assembleDebug
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+The generated debug APK is written to:
+
+```text
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+Run tests:
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npm test
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+Run lint:
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```sh
+npm run lint
+```
 
-## Step 3: Modify your app
+## Troubleshooting
 
-Now that you have successfully run the app, let's make changes!
+### Android project not found
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+If `npm run android` prints:
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+```text
+error Android project not found.
+```
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+make sure the `android/` directory exists in this React Native project:
 
-## Congratulations! :tada:
+```sh
+ls android
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+The Android native project is required by `react-native run-android`.
 
-### Now what?
+### Unsupported class file major version 69
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+This means the build is using a Java version that is too new for the current Gradle/React Native setup. On this machine, OpenJDK 25 triggers this error.
 
-# Troubleshooting
+Use JDK 17:
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+```sh
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+npm run android
+```
 
-# Learn More
+Check the active Java version:
 
-To learn more about React Native, take a look at the following resources:
+```sh
+java -version
+```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### NDK source.properties is missing
+
+If Gradle reports an error like:
+
+```text
+NDK at ... did not have a source.properties file
+```
+
+the selected NDK install is incomplete or corrupted. This project is configured to use:
+
+```text
+28.0.12433566
+```
+
+If that version is missing, install it from Android Studio:
+
+1. Open **Settings**.
+2. Go to **Languages & Frameworks** -> **Android SDK**.
+3. Open **SDK Tools**.
+4. Enable **Show Package Details**.
+5. Install **NDK (Side by side) 28.0.12433566**.
+
+### No devices found
+
+If the build succeeds but the app does not install, check connected devices:
+
+```sh
+adb devices
+```
+
+You should see an emulator or device in the `device` state. If the list is empty, start an emulator in Android Studio or reconnect the physical device and allow USB debugging.
+
+### Metro cache issues
+
+If the app launches but JavaScript changes are not picked up, restart Metro with a clean cache:
+
+```sh
+npm start -- --reset-cache
+```
+
+Then run Android again in another terminal:
+
+```sh
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+npm run android
+```
+

@@ -3,6 +3,11 @@ bin/
 gen/
 log
 rn/node_modules
-rn/android
+rn/android/.gradle
+rn/android/build
+rn/android/app/build
+rn/android/app/.cxx
+rn/android/local.properties
 rn/ios
-build.gradle
+/build.gradle
+.codex
