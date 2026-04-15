@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="70" x2="442" y1="54" y2="458" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#18a67a"/>
+      <stop offset="0.56" stop-color="#0d765f"/>
+      <stop offset="1" stop-color="#134e57"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="136" x2="376" y1="112" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8d8"/>
+      <stop offset="1" stop-color="#ffd858"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="122" x2="332" y1="86" y2="284" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#063d3c" flood-opacity="0.34"/>
+    </filter>
+    <filter id="numberShadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#8d3b08" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="104" fill="url(#bg)"/>
+  <path d="M76 132C118 72 197 42 276 56c70 12 130 58 160 120 31 64 27 140-10 198-53 32-122 50-194 43-83-8-151-48-188-105-16-63-4-127 32-180Z" fill="url(#shine)"/>
+
+  <g filter="url(#softShadow)">
+    <path d="m256 58 27 58 55-34-3 65 65-12-33 56 63 16-55 35 48 44-65 7 29 58-62-21-8 64-45-47-40 51-14-64-60 27 24-61-65-1 44-48-58-30 61-22-39-52 64 7-9-64 58 39Z" fill="#f7bf19"/>
+    <path d="m256 92 20 43 41-25-2 48 48-9-24 42 46 12-40 26 35 32-48 5 22 43-46-15-6 47-33-34-30 38-10-47-45 20 18-45-49-1 33-35-43-23 45-16-29-39 47 5-6-48 43 29Z" fill="url(#tile)"/>
+    <circle cx="256" cy="256" r="112" fill="#fff3b5"/>
+    <circle cx="256" cy="256" r="92" fill="#ffe26c"/>
+  </g>
+
+  <g filter="url(#numberShadow)">
+    <text x="256" y="286" fill="#d83a22" font-family="Arial, Helvetica, sans-serif" font-size="118" font-weight="900" text-anchor="middle" letter-spacing="-6">10</text>
+  </g>
+
+  <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-opacity="0.72" stroke-width="14">
+    <path d="M126 181h56"/>
+    <path d="M330 181h56"/>
+    <path d="M126 331h56"/>
+    <path d="M330 331h56"/>
+  </g>
+  <g fill="#ffffff" opacity="0.88">
+    <circle cx="154" cy="181" r="12"/>
+    <circle cx="358" cy="181" r="12"/>
+    <circle cx="154" cy="331" r="12"/>
+    <circle cx="358" cy="331" r="12"/>
+  </g>
+</svg>

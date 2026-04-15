@@ -166,4 +166,3 @@ Then run Android again in another terminal:
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 npm run android
 ```
-
